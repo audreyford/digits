@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Container, Header, Loader, Card } from 'semantic-ui-react';
-import { Stuffs } from '/imports/api/stuff/stuff';
+import { Contacts } from '/imports/api/contact/contact';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import Contact from '/imports/ui/components/Contact'
@@ -50,16 +50,16 @@ class ListContacts extends React.Component {
 
 /** Require an array of Stuff documents in the props. */
 ListContacts.propTypes = {
-  stuffs: PropTypes.array.isRequired,
+  contacts: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
   // Get access to Stuff documents.
-  const subscription = Meteor.subscribe('Stuff');
+  const subscription = Meteor.subscribe('Contacts');
   return {
-    stuffs: Stuffs.find({}).fetch(),
+    contacts: Contacts.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(ListContacts);
