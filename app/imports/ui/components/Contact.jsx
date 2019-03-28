@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image } from 'semantic-ui-react';
+import { Card, Image, Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
@@ -23,8 +23,50 @@ class Contact extends React.Component {
 
 /** Require a document to be passed to this component. */
 Contact.propTypes = {
-  stuff: PropTypes.object.isRequired,
+  contact: PropTypes.object.isRequired,
 };
 
 /** Wrap this component in withRouter since we use the <Link> React Router element. */
 export default withRouter(Contact);
+
+constructor(props) {
+  super(props);
+  this.onClick = this.onClick.bind(this);
+}
+
+onClick() {
+  Contacts.remove(this.props.stuff._id, this.deleteCallback);
+}
+
+deleteCallback(error) {
+  if (error) {
+    Bert.alert({ type: 'danger', message: `Delete failed: ${error.message}` });
+  } else {
+    Bert.alert({ type: 'success', message: 'Delete succeeded' });
+    this.formRef.reset();
+  }
+}
+
+render() {
+  return (
+      <Card>
+        <Card.Content>
+      <Table.Cell>
+        <Table.Cell>{this.props.contact.name}</Table.Cell>
+        <Table.Cell>{this.props.contact.quantity}</Table.Cell>
+        <Table.Cell>{this.props.contact.condition}</Table.Cell>
+        <Table.Cell>
+          <Link to={ /edit/${this.props.contact._id} }>Edit</Link>
+        </Table.Cell>
+      <Table.Cell>
+        <Button onClick={( this.onClick )}>Delete</Button>
+      </Table.Cell>
+      </Table.Row>
+      </Card.Content>
+      </Card>
+  );
+ )
+}
+ ContactItem.propTypes = {
+  contact: PropTypes.object.isRequired,
+};
